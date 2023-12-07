@@ -44,4 +44,4 @@ class Channel(db.Model):
     ch_name = db.Column(db.String(50), nullable=False)
 
 with app.app_context():
-    db.create_all()
+     db.create_all()
