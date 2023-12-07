@@ -1,6 +1,44 @@
 from flask import Flask, render_template, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, String
+
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ourdatabase.db'
+
+db = SQLAlchemy()
+db.init_app(app)
+
+
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50),nullable=False)
+    email = db.Column(db.String(120),nullable=False)
+
+# to put the tables in db file
+# with app.app_context():
+#     db.create_all()
+
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(250), unique=True, nullable=False)
+    author = db.Column(db.String(250), nullable=False)
+    rating = db.Column(db.Float, nullable=False)
+ 
+with app.app_context():
+    db.create_all()
+
+with app.app_context():
+    new_book = Book(id=1, title="Harry Potter", author="J. K. Rowling", rating=9.3)
+    db.session.add(new_book)
+    db.session.commit()
+
+
+with app.app_context():
+    user = User(id=1,name='Hassaan', email='hahajaj')
+    db.session.add(user)
+    db.session.commit()
 
 static = {"firstName": "name",
             "lastName": "lastname",
@@ -54,5 +92,5 @@ def group():
     return redirect(url_for('home'))
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
