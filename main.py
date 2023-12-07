@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String
+from flask_ckeditor import CKEditor
 
 
 app = Flask(__name__)
+ckeditor = CKEditor(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ourdatabase.db'
 
 db = SQLAlchemy()
